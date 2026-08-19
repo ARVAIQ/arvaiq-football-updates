@@ -1,0 +1,10 @@
+*.exe
+*.msi
+*.zip
+*.sqlite*
+*.db
+*.env
+*.key
+*.pem
+*.log
+__pycache__/
