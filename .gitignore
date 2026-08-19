@@ -1,3 +1,5 @@
+# Release binaries normally belong in GitHub Releases.
+# v2.0.7 is temporarily committed only to bootstrap automatic publishing.
 *.exe
 *.msi
 *.zip
@@ -8,3 +10,7 @@
 *.pem
 *.log
 __pycache__/
+
+!release-assets/
+!release-assets/v2.0.7/
+!release-assets/v2.0.7/*.exe

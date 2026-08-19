@@ -1,0 +1,30 @@
+ARVAIQ Football 2.0.7 — publicação automática pelo GitHub Actions
+
+Este pacote evita preencher a página de Releases manualmente.
+
+1. Extrai TODO o conteúdo deste ZIP diretamente para:
+   D:\ARVAIQ_DEV\arvaiq-football-updates
+
+2. Abre esse repo no GitHub Desktop.
+
+3. Deves ver:
+   - .github/workflows/publish-2.0.7.yml
+   - release-assets/v2.0.7/ARVAIQ.Football.-.Setup.exe
+   - release-assets/v2.0.7/ARVAIQFootball.exe
+   - os dois .sha256
+   - RELEASE_NOTES_2.0.7.md
+   - .gitignore
+
+4. Commit:
+   Publish ARVAIQ Football 2.0.7
+
+5. Push origin.
+
+Depois do push, o GitHub Actions cria automaticamente a Release pública v2.0.7
+e anexa os quatro assets com os nomes esperados pelo updater.
+
+SHA256 Setup:
+5a44788da1b46962ad480a8d5d2a5c0f926f764050ea7c030689ad1e6df01f41
+
+SHA256 App:
+f16cb75ba43bff5e68956753e607e73823feb2d2fb7e6c79c97bcd4603e23e40
