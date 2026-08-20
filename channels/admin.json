@@ -1,9 +1,9 @@
 {
   "product": "ARVAIQ Admin",
   "channel": "admin",
-  "version": "1.0.0",
-  "tag": "admin-v1.0.0",
-  "notes": "Canal Admin temporariamente em espera enquanto o atualizador independente é corrigido.",
-  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.0.0/ARVAIQAdmin.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.0.0/ARVAIQAdmin.sha256"
+  "version": "1.0.2",
+  "tag": "admin-v1.0.2",
+  "notes": "Atualizador interno exclusivo do Admin, sem Setup e sem iniciar o Football.",
+  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.0.2/ARVAIQAdmin.exe",
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.0.2/ARVAIQAdmin.sha256"
 }
