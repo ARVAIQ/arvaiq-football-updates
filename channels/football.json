@@ -1,0 +1,9 @@
+{
+  "product": "ARVAIQ Football",
+  "channel": "football",
+  "version": "2.1.0",
+  "tag": "v2.1.0",
+  "notes": "ARVAIQ Football 2.1.0: intelligence foundation integrated, independent Admin release stream, Shadow intelligence visible without decision influence, and transition to the dedicated Football update channel.",
+  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.0/ARVAIQFootball.exe",
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.0/ARVAIQFootball.sha256"
+}
