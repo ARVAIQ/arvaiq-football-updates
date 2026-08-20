@@ -19,5 +19,7 @@ __pycache__/
 !release-assets/admin/
 !release-assets/admin/v1.0.0/
 !release-assets/admin/v1.0.0/*.exe
+!release-assets/admin/v1.0.1/
+!release-assets/admin/v1.0.1/*.exe
 !release-assets/v2.1.1/
 !release-assets/v2.1.1/*.exe
