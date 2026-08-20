@@ -11,6 +11,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: arva-iq-release-channel-main
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
