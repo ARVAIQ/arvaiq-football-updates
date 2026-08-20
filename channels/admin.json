@@ -1,0 +1,9 @@
+{
+  "product": "ARVAIQ Admin",
+  "channel": "admin",
+  "version": "1.0.0",
+  "tag": "admin-v1.0.0",
+  "notes": "Primeira release independente do ARVAIQ Admin. Atualizador isolado do Football.",
+  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.0.0/ARVAIQAdmin.exe",
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.0.0/ARVAIQAdmin.sha256"
+}
