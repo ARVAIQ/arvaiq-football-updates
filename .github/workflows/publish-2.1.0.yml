@@ -1,0 +1,52 @@
+name: Publish ARVAIQ Football 2.1.0
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "release-assets/v2.1.0/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "release-assets/v2.1.0/ARVAIQFootball.exe"
+          test -f "release-assets/v2.1.0/ARVAIQFootball.sha256"
+
+      - name: Verify SHA-256
+        shell: bash
+        working-directory: release-assets/v2.1.0
+        run: |
+          set -euo pipefail
+          sha256sum -c ARVAIQFootball.sha256
+
+      - name: Create or replace v2.1.0 release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if gh release view v2.1.0 >/dev/null 2>&1; then
+            gh release delete v2.1.0 --cleanup-tag --yes
+          fi
+
+          gh release create v2.1.0 \
+            "release-assets/v2.1.0/ARVAIQFootball.exe" \
+            "release-assets/v2.1.0/ARVAIQFootball.sha256" \
+            --title "ARVAIQ Football 2.1.0" \
+            --notes-file "RELEASE_NOTES_2.1.0.md" \
+            --target main \
+            --latest
