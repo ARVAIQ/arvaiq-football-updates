@@ -22,8 +22,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -f "release-assets/v2.1.0/ARVAIQ.Football.-.Setup.exe"
-          test -f "release-assets/v2.1.0/ARVAIQFootballSetup.sha256"
           test -f "release-assets/v2.1.0/ARVAIQFootball.exe"
           test -f "release-assets/v2.1.0/ARVAIQFootball.sha256"
 
@@ -32,7 +30,6 @@ jobs:
         working-directory: release-assets/v2.1.0
         run: |
           set -euo pipefail
-          sha256sum -c ARVAIQFootballSetup.sha256
           sha256sum -c ARVAIQFootball.sha256
 
       - name: Create or replace v2.1.0 release
@@ -47,8 +44,6 @@ jobs:
           fi
 
           gh release create v2.1.0 \
-            "release-assets/v2.1.0/ARVAIQ.Football.-.Setup.exe" \
-            "release-assets/v2.1.0/ARVAIQFootballSetup.sha256" \
             "release-assets/v2.1.0/ARVAIQFootball.exe" \
             "release-assets/v2.1.0/ARVAIQFootball.sha256" \
             --title "ARVAIQ Football 2.1.0" \
