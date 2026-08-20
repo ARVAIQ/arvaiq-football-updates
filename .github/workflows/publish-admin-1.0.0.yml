@@ -1,0 +1,75 @@
+name: Publish ARVAIQ Admin 1.0.0
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "release-assets/admin/v1.0.0/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Admin assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "release-assets/admin/v1.0.0/ARVAIQAdmin.exe"
+          test -f "release-assets/admin/v1.0.0/ARVAIQAdmin.sha256"
+          test "$(head -c 2 release-assets/admin/v1.0.0/ARVAIQAdmin.exe)" = "MZ"
+
+      - name: Verify SHA-256
+        shell: bash
+        working-directory: release-assets/admin/v1.0.0
+        run: |
+          set -euo pipefail
+          sha256sum -c ARVAIQAdmin.sha256
+
+      - name: Create or replace Admin release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view admin-v1.0.0 >/dev/null 2>&1; then
+            gh release delete admin-v1.0.0 --cleanup-tag --yes
+          fi
+          gh release create admin-v1.0.0 \
+            "release-assets/admin/v1.0.0/ARVAIQAdmin.exe" \
+            "release-assets/admin/v1.0.0/ARVAIQAdmin.sha256" \
+            --title "ARVAIQ Admin 1.0.0" \
+            --notes-file "RELEASE_NOTES_ADMIN_1.0.0.md" \
+            --target main \
+            --latest=false
+
+      - name: Activate independent Admin channel
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p channels
+          cat > channels/admin.json <<'JSON'
+          {
+            "product": "ARVAIQ Admin",
+            "channel": "admin",
+            "version": "1.0.0",
+            "tag": "admin-v1.0.0",
+            "notes": "Primeira release independente do ARVAIQ Admin. Atualizador isolado do Football.",
+            "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.0.0/ARVAIQAdmin.exe",
+            "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.0.0/ARVAIQAdmin.sha256"
+          }
+          JSON
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- channels/admin.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Activate ARVAIQ Admin 1.0.0 channel"
+            git push origin main
+          fi

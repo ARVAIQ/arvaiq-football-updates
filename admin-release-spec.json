@@ -1,0 +1,12 @@
+{
+  "product": "ARVAIQ Admin",
+  "current_release": "1.0.0",
+  "tag": "admin-v1.0.0",
+  "required_assets": [
+    "ARVAIQAdmin.exe",
+    "ARVAIQAdmin.sha256"
+  ],
+  "asset_directory": "release-assets/admin/v1.0.0",
+  "updater_repo": "ARVAIQ/arvaiq-football-updates",
+  "activation_rule": "channels/admin.json is written only after release creation succeeds"
+}
