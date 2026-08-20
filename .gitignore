@@ -1,5 +1,5 @@
 # Release binaries normally belong in GitHub Releases.
-# v2.0.7 is temporarily committed only to bootstrap automatic publishing.
+# Specific bootstrap release asset folders are explicitly allowed below.
 *.exe
 *.msi
 *.zip
@@ -14,3 +14,5 @@ __pycache__/
 !release-assets/
 !release-assets/v2.0.7/
 !release-assets/v2.0.7/*.exe
+!release-assets/v2.1.0/
+!release-assets/v2.1.0/*.exe
