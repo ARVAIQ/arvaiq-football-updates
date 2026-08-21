@@ -1,0 +1,82 @@
+name: Publish ARVAIQ Admin 1.2.1
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "release-assets/admin/v1.2.1/ARVAIQAdmin.exe"
+      - "release-assets/admin/v1.2.1/ARVAIQAdmin.sha256"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arva-iq-admin-release-main
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout update channel
+        uses: actions/checkout@v4
+
+      - name: Validate Admin-only assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "release-assets/admin/v1.2.1/ARVAIQAdmin.exe"
+          test -f "release-assets/admin/v1.2.1/ARVAIQAdmin.sha256"
+          test "$(head -c 2 release-assets/admin/v1.2.1/ARVAIQAdmin.exe)" = "MZ"
+          test ! -e "release-assets/admin/v1.2.1/ARVAIQFootball.exe"
+          test ! -e "release-assets/admin/v1.2.1/ARVAIQFootballSetup.exe"
+
+      - name: Verify SHA-256
+        shell: bash
+        working-directory: release-assets/admin/v1.2.1
+        run: |
+          set -euo pipefail
+          sha256sum -c ARVAIQAdmin.sha256
+
+      - name: Create or replace Admin-only release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view admin-v1.2.1 >/dev/null 2>&1; then
+            gh release delete admin-v1.2.1 --cleanup-tag --yes
+          fi
+          gh release create admin-v1.2.1 \
+            "release-assets/admin/v1.2.1/ARVAIQAdmin.exe" \
+            "release-assets/admin/v1.2.1/ARVAIQAdmin.sha256" \
+            --title "ARVAIQ Admin 1.2.1" \
+            --notes-file "RELEASE_NOTES_ADMIN_1.2.1.md" \
+            --target main \
+            --latest=false
+
+      - name: Activate independent Admin channel
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p channels
+          cat > channels/admin.json <<'JSON'
+          {
+            "product": "ARVAIQ Admin",
+            "channel": "admin",
+            "version": "1.2.1",
+            "tag": "admin-v1.2.1",
+            "notes": "Navegação de Modelos corrigida: cada submenu abre sob a categoria certa, com estado ativo moderno. Atualizador exclusivo do Admin, sem Setup e sem Football.",
+            "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.2.1/ARVAIQAdmin.exe",
+            "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.2.1/ARVAIQAdmin.sha256"
+          }
+          JSON
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- channels/admin.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Activate ARVAIQ Admin 1.2.1 channel"
+            git push origin main
+          fi
