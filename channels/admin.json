@@ -1,9 +1,9 @@
 {
   "product": "ARVAIQ Admin",
   "channel": "admin",
-  "version": "1.1.0",
-  "tag": "admin-v1.1.0",
-  "notes": "Novo painel Admin, telemetria operacional e navegação moderna de Modelos. Atualizador exclusivo do Admin, sem Setup e sem Football.",
-  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.1.0/ARVAIQAdmin.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.1.0/ARVAIQAdmin.sha256"
+  "version": "1.2.0",
+  "tag": "admin-v1.2.0",
+  "notes": "Evidência real dos modelos, liquidação auditável e métricas de produção/shadow. Atualizador exclusivo do Admin, sem Setup e sem Football.",
+  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.2.0/ARVAIQAdmin.exe",
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.2.0/ARVAIQAdmin.sha256"
 }
