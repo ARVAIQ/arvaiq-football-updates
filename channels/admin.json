@@ -1,9 +1,9 @@
 {
   "product": "ARVAIQ Admin",
   "channel": "admin",
-  "version": "1.2.0",
-  "tag": "admin-v1.2.0",
-  "notes": "Evidência real dos modelos, liquidação auditável e métricas de produção/shadow. Atualizador exclusivo do Admin, sem Setup e sem Football.",
-  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.2.0/ARVAIQAdmin.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.2.0/ARVAIQAdmin.sha256"
+  "version": "1.2.1",
+  "tag": "admin-v1.2.1",
+  "notes": "Navegação de Modelos corrigida: cada submenu abre sob a categoria certa, com estado ativo moderno. Atualizador exclusivo do Admin, sem Setup e sem Football.",
+  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.2.1/ARVAIQAdmin.exe",
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/admin-v1.2.1/ARVAIQAdmin.sha256"
 }
