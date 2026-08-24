@@ -1,7 +1,7 @@
 {
   "product": "ARVAIQ Football",
-  "current_release": "2.1.1",
-  "tag": "v2.1.1",
+  "current_release": "2.1.2",
+  "tag": "v2.1.2",
   "required_assets": [
     "ARVAIQFootball.exe",
     "ARVAIQFootball.sha256"

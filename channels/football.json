@@ -1,9 +1,9 @@
 {
   "product": "ARVAIQ Football",
   "channel": "football",
-  "version": "2.1.1",
-  "tag": "v2.1.1",
-  "notes": "Football 2.1.1: janela de login maior, password cifrada e guardada sem login automático, e isolamento reforçado do Admin.",
-  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.1/ARVAIQFootball.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.1/ARVAIQFootball.sha256"
+  "version": "2.1.2",
+  "tag": "v2.1.2",
+  "notes": "Football 2.1.2: catálogo comercial fechado por identidade do provider, bloqueio de ligas não aprovadas e deduplicação da Liga Portugal 2.",
+  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.2/ARVAIQFootball.exe",
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.2/ARVAIQFootball.sha256"
 }
