@@ -5,5 +5,8 @@
   "tag": "v2.1.2",
   "notes": "Football 2.1.2: catálogo comercial fechado por identidade do provider, bloqueio de ligas não aprovadas e deduplicação da Liga Portugal 2.",
   "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.2/ARVAIQFootball.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.2/ARVAIQFootball.sha256"
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.2/ARVAIQFootball.sha256",
+  "setup_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.2/ARVAIQ.Football.-.Setup.exe",
+  "setup_sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.2/ARVAIQFootballSetup.sha256"
 }
+
