@@ -1,0 +1,99 @@
+name: Build Football 2.1.3 Setup
+
+on:
+  workflow_run:
+    workflows: ["Publish ARVAIQ Football 2.1.3"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arva-iq-football-2-1-3-setup
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: windows-latest
+    steps:
+      - name: Checkout update channel
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Download and verify released Football executable
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release-input | Out-Null
+          gh release download v2.1.3 --pattern "ARVAIQFootball.exe" --pattern "ARVAIQFootball.sha256" --dir release-input
+          $expected = ((Get-Content release-input/ARVAIQFootball.sha256 -Raw).Trim() -split "\s+")[0].ToLowerInvariant()
+          $actual = (Get-FileHash release-input/ARVAIQFootball.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $expected) { throw "Released executable SHA-256 mismatch." }
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --no-progress -y
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          @'
+          [Setup]
+          AppId={{F05B3A30-3D1B-4C4D-9066-53D42A7D495E}
+          AppName=ARVAIQ Football
+          AppVersion=2.1.3
+          AppPublisher=ARVAIQ
+          DefaultDirName={localappdata}\Programs\ARVAIQ Football
+          DefaultGroupName=ARVAIQ Football
+          DisableProgramGroupPage=yes
+          OutputDir=dist
+          OutputBaseFilename=ARVAIQ.Football.-.Setup
+          Compression=lzma2
+          SolidCompression=yes
+          WizardStyle=modern
+          PrivilegesRequired=lowest
+          CloseApplications=force
+          RestartApplications=no
+          UninstallDisplayName=ARVAIQ Football
+          VersionInfoVersion=2.1.3.0
+          VersionInfoProductName=ARVAIQ Football
+          VersionInfoProductVersion=2.1.3
+
+          [Files]
+          Source: "release-input\ARVAIQFootball.exe"; DestDir: "{app}"; DestName: "ARVAIQFootball.exe"; Flags: ignoreversion
+
+          [Icons]
+          Name: "{autodesktop}\ARVAIQ Football"; Filename: "{app}\ARVAIQFootball.exe"; WorkingDir: "{app}"
+          Name: "{group}\ARVAIQ Football"; Filename: "{app}\ARVAIQFootball.exe"; WorkingDir: "{app}"
+
+          [Run]
+          Filename: "{app}\ARVAIQFootball.exe"; Description: "Abrir ARVAIQ Football"; Flags: nowait postinstall skipifsilent
+          '@ | Set-Content -Path football-2.1.3.iss -Encoding utf8
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" football-2.1.3.iss
+          if (-not (Test-Path "dist/ARVAIQ.Football.-.Setup.exe")) { throw "Setup was not created." }
+          $hash = (Get-FileHash "dist/ARVAIQ.Football.-.Setup.exe" -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  ARVAIQ.Football.-.Setup.exe" | Set-Content "dist/ARVAIQFootballSetup.sha256" -Encoding ascii
+
+      - name: Attach Setup and activate installer bridge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          gh release upload v2.1.3 "dist/ARVAIQ.Football.-.Setup.exe" "dist/ARVAIQFootballSetup.sha256" --clobber
+          git pull --ff-only origin main
+          $manifestPath = "channels/football.json"
+          $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
+          $manifest | Add-Member -NotePropertyName setup_url -NotePropertyValue "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.3/ARVAIQ.Football.-.Setup.exe" -Force
+          $manifest | Add-Member -NotePropertyName setup_sha256_url -NotePropertyValue "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.3/ARVAIQFootballSetup.sha256" -Force
+          ($manifest | ConvertTo-Json -Depth 10) + "`n" | Set-Content $manifestPath -Encoding utf8
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- $manifestPath
+          if (-not (git diff --cached --quiet)) {
+            git commit -m "Publish Football 2.1.3 installer bridge"
+            git push origin main
+          }
