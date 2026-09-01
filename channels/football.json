@@ -1,12 +1,9 @@
 {
   "product": "ARVAIQ Football",
   "channel": "football",
-  "version": "2.1.6",
-  "tag": "v2.1.6",
-  "notes": "Football 2.1.6: expande jogos válidos, mantém competição canónica por provider ID, corrige dedup austríaco e bloqueia mapping grego não validado.",
-  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.6/ARVAIQFootball.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.6/ARVAIQFootball.sha256",
-  "setup_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.6/ARVAIQ.Football.-.Setup.exe",
-  "setup_sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.6/ARVAIQFootballSetup.sha256"
+  "version": "2.1.7",
+  "tag": "v2.1.7",
+  "notes": "Football 2.1.7: corrige entitlement OWNER/FRIENDS para todo o catálogo provider-mapped e reforça isolamento de provider IDs e ML independente.",
+  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.7/ARVAIQFootball.exe",
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.7/ARVAIQFootball.sha256"
 }
-
