@@ -1,12 +1,9 @@
 {
   "product": "ARVAIQ Football",
   "channel": "football",
-  "version": "2.1.4",
-  "tag": "v2.1.4",
-  "notes": "Football 2.1.4: análise central e nova vista de mercados com melhores odds disponíveis mesmo sem value.",
-  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.4/ARVAIQFootball.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.4/ARVAIQFootball.sha256",
-  "setup_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.4/ARVAIQ.Football.-.Setup.exe",
-  "setup_sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.4/ARVAIQFootballSetup.sha256"
+  "version": "2.1.5",
+  "tag": "v2.1.5",
+  "notes": "Football 2.1.5: corrige jogos ausentes no Analysis central e aplica seletor de mercado ARVAIQ escuro.",
+  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.5/ARVAIQFootball.exe",
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.5/ARVAIQFootball.sha256"
 }
-
