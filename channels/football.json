@@ -1,12 +1,9 @@
 {
   "product": "ARVAIQ Football",
   "channel": "football",
-  "version": "2.1.3",
-  "tag": "v2.1.3",
-  "notes": "Football 2.1.3: lista de jogos mais fluida e deduplicação semântica de fixtures equivalentes dos providers.",
-  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.3/ARVAIQFootball.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.3/ARVAIQFootball.sha256",
-  "setup_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.3/ARVAIQ.Football.-.Setup.exe",
-  "setup_sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.3/ARVAIQFootballSetup.sha256"
+  "version": "2.1.4",
+  "tag": "v2.1.4",
+  "notes": "Football 2.1.4: análise central e nova vista de mercados com melhores odds disponíveis mesmo sem value.",
+  "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.4/ARVAIQFootball.exe",
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.4/ARVAIQFootball.sha256"
 }
-
