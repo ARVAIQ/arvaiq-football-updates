@@ -1,0 +1,96 @@
+name: Publish ARVAIQ Football 2.1.4
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "release-assets/v2.1.4/**"
+      - "RELEASE_NOTES_2.1.4.md"
+      - ".github/workflows/publish-2.1.4.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arva-iq-release-channel-main
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Football assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "release-assets/v2.1.4/ARVAIQFootball.exe"
+          test -f "release-assets/v2.1.4/ARVAIQFootball.sha256"
+          test "$(head -c 2 release-assets/v2.1.4/ARVAIQFootball.exe)" = "MZ"
+
+      - name: Verify SHA-256
+        shell: bash
+        working-directory: release-assets/v2.1.4
+        run: |
+          set -euo pipefail
+          sha256sum -c ARVAIQFootball.sha256
+
+      - name: Create or replace Football release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view v2.1.4 >/dev/null 2>&1; then
+            gh release delete v2.1.4 --cleanup-tag --yes
+          fi
+          gh release create v2.1.4 \
+            "release-assets/v2.1.4/ARVAIQFootball.exe" \
+            "release-assets/v2.1.4/ARVAIQFootball.sha256" \
+            --title "ARVAIQ Football 2.1.4" \
+            --notes-file "RELEASE_NOTES_2.1.4.md" \
+            --target main \
+            --latest
+
+      - name: Activate Football 2.1.4 channel
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > channels/football.json <<'JSON'
+          {
+            "product": "ARVAIQ Football",
+            "channel": "football",
+            "version": "2.1.4",
+            "tag": "v2.1.4",
+            "notes": "Football 2.1.4: análise central e nova vista de mercados com melhores odds disponíveis mesmo sem value.",
+            "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.4/ARVAIQFootball.exe",
+            "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.4/ARVAIQFootball.sha256"
+          }
+          JSON
+          cat > release-spec.json <<'JSON'
+          {
+            "product": "ARVAIQ Football",
+            "current_release": "2.1.4",
+            "tag": "v2.1.4",
+            "required_assets": [
+              "ARVAIQFootball.exe",
+              "ARVAIQFootball.sha256"
+            ],
+            "optional_assets": [
+              "ARVAIQ.Football.-.Setup.exe",
+              "ARVAIQFootballSetup.sha256"
+            ],
+            "updater_repo": "ARVAIQ/arvaiq-football-updates"
+          }
+          JSON
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- channels/football.json release-spec.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Activate ARVAIQ Football 2.1.4 channel"
+            git push origin main
+          fi
