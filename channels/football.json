@@ -5,5 +5,8 @@
   "tag": "v2.1.5",
   "notes": "Football 2.1.5: corrige jogos ausentes no Analysis central e aplica seletor de mercado ARVAIQ escuro.",
   "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.5/ARVAIQFootball.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.5/ARVAIQFootball.sha256"
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.5/ARVAIQFootball.sha256",
+  "setup_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.5/ARVAIQ.Football.-.Setup.exe",
+  "setup_sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.5/ARVAIQFootballSetup.sha256"
 }
+
