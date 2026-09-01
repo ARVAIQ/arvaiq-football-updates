@@ -92,5 +92,6 @@ jobs:
           git add -- channels/football.json release-spec.json
           if ! git diff --cached --quiet; then
             git commit -m "Activate ARVAIQ Football 2.1.4 channel"
+            git pull --rebase origin main
             git push origin main
           fi
