@@ -5,5 +5,8 @@
   "tag": "v2.1.9",
   "notes": "Football 2.1.9: corrige a janela de 3 dias, deduplicação/aliases e robustez do motor de análise.",
   "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.9/ARVAIQFootball.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.9/ARVAIQFootball.sha256"
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.9/ARVAIQFootball.sha256",
+  "setup_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.9/ARVAIQ.Football.-.Setup.exe",
+  "setup_sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.9/ARVAIQFootballSetup.sha256"
 }
+
