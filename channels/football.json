@@ -5,5 +5,8 @@
   "tag": "v2.1.8",
   "notes": "Football 2.1.8: simplifica o pipeline central, remove filtros redundantes e reforça catálogo fechado e deduplicação semântica.",
   "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.8/ARVAIQFootball.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.8/ARVAIQFootball.sha256"
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.8/ARVAIQFootball.sha256",
+  "setup_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.8/ARVAIQ.Football.-.Setup.exe",
+  "setup_sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.8/ARVAIQFootballSetup.sha256"
 }
+
