@@ -5,5 +5,8 @@
   "tag": "v2.1.10",
   "notes": "Football 2.1.10: planos comerciais atuais, catálogo efetivo do Accounts e onboarding de ligas corrigido.",
   "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.10/ARVAIQFootball.exe",
-  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.10/ARVAIQFootball.sha256"
+  "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.10/ARVAIQFootball.sha256",
+  "setup_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.10/ARVAIQ.Football.-.Setup.exe",
+  "setup_sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.10/ARVAIQFootballSetup.sha256"
 }
+
