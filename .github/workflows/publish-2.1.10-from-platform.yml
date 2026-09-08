@@ -1,0 +1,164 @@
+name: Publish ARVAIQ Football 2.1.10 from platform
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-2.1.10-from-platform.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arva-iq-football-2-1-10-release
+  cancel-in-progress: false
+
+jobs:
+  build-publish:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout update channel
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: updates
+
+      - name: Checkout ARVAIQ platform release branch
+        uses: actions/checkout@v4
+        with:
+          repository: ARVAIQ/arvaiq-platform
+          ref: commercial-launch-foundation
+          path: platform
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Verify source version
+        shell: pwsh
+        run: |
+          $version = (Get-Content platform/client/football/VERSION -Raw).Trim()
+          if ($version -ne "2.1.10") { throw "Expected Football 2.1.10 source, found $version" }
+
+      - name: Install build dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --disable-pip-version-check --upgrade pyinstaller pillow requests XlsxWriter packaging tzdata
+          choco install innosetup --no-progress -y
+
+      - name: Build Football executable
+        shell: pwsh
+        run: |
+          python -m PyInstaller --noconfirm --clean --onefile --windowed `
+            --name ARVAIQFootball `
+            --icon platform/client/football/assets/arvaiq_football.ico `
+            --paths platform/client/football `
+            --add-data "platform/client/football/config.json;." `
+            --add-data "platform/client/football/VERSION;." `
+            --add-data "platform/client/football/assets;assets" `
+            --add-data "platform/model_registry.json;." `
+            --distpath dist `
+            --workpath build `
+            --specpath spec `
+            platform/client/football/app.py
+          if (-not (Test-Path "dist/ARVAIQFootball.exe")) { throw "Football executable was not created." }
+          if ((Get-Item "dist/ARVAIQFootball.exe").Length -lt 1000000) { throw "Football executable is unexpectedly small." }
+          $bytes = [System.IO.File]::ReadAllBytes((Resolve-Path "dist/ARVAIQFootball.exe"))
+          if ($bytes[0] -ne 0x4d -or $bytes[1] -ne 0x5a) { throw "Football executable is not a valid PE file." }
+          $hash = (Get-FileHash "dist/ARVAIQFootball.exe" -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  ARVAIQFootball.exe" | Set-Content "dist/ARVAIQFootball.sha256" -Encoding ascii
+
+      - name: Build Windows installer
+        shell: pwsh
+        run: |
+          @'
+          [Setup]
+          AppId={{F05B3A30-3D1B-4C4D-9066-53D42A7D495E}
+          AppName=ARVAIQ Football
+          AppVersion=2.1.10
+          AppPublisher=ARVAIQ
+          DefaultDirName={localappdata}\Programs\ARVAIQ Football
+          DefaultGroupName=ARVAIQ Football
+          DisableProgramGroupPage=yes
+          OutputDir=dist
+          OutputBaseFilename=ARVAIQ.Football.-.Setup
+          Compression=lzma2
+          SolidCompression=yes
+          WizardStyle=modern
+          PrivilegesRequired=lowest
+          CloseApplications=force
+          RestartApplications=no
+          UninstallDisplayName=ARVAIQ Football
+          VersionInfoVersion=2.1.10.0
+          VersionInfoProductName=ARVAIQ Football
+          VersionInfoProductVersion=2.1.10
+
+          [Files]
+          Source: "dist\ARVAIQFootball.exe"; DestDir: "{app}"; DestName: "ARVAIQFootball.exe"; Flags: ignoreversion
+
+          [Icons]
+          Name: "{autodesktop}\ARVAIQ Football"; Filename: "{app}\ARVAIQFootball.exe"; WorkingDir: "{app}"
+          Name: "{group}\ARVAIQ Football"; Filename: "{app}\ARVAIQFootball.exe"; WorkingDir: "{app}"
+
+          [Run]
+          Filename: "{app}\ARVAIQFootball.exe"; Description: "Abrir ARVAIQ Football"; Flags: nowait postinstall skipifsilent
+          '@ | Set-Content -Path football-2.1.10.iss -Encoding utf8
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" football-2.1.10.iss
+          if (-not (Test-Path "dist/ARVAIQ.Football.-.Setup.exe")) { throw "Setup was not created." }
+          $hash = (Get-FileHash "dist/ARVAIQ.Football.-.Setup.exe" -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  ARVAIQ.Football.-.Setup.exe" | Set-Content "dist/ARVAIQFootballSetup.sha256" -Encoding ascii
+
+      - name: Publish release and activate channel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        working-directory: updates
+        run: |
+          if (gh release view v2.1.10 *> $null) {
+            gh release delete v2.1.10 --cleanup-tag --yes
+          }
+          gh release create v2.1.10 `
+            "../dist/ARVAIQFootball.exe" `
+            "../dist/ARVAIQFootball.sha256" `
+            "../dist/ARVAIQ.Football.-.Setup.exe" `
+            "../dist/ARVAIQFootballSetup.sha256" `
+            --title "ARVAIQ Football 2.1.10" `
+            --notes "Football 2.1.10: corrige o consumo dos planos comerciais atuais, aplica as competições efetivas devolvidas pelo Accounts e atualiza a sessão imediatamente após o onboarding de ligas." `
+            --target main `
+            --latest
+
+          @'
+          {
+            "product": "ARVAIQ Football",
+            "channel": "football",
+            "version": "2.1.10",
+            "tag": "v2.1.10",
+            "notes": "Football 2.1.10: planos comerciais atuais, catálogo efetivo do Accounts e onboarding de ligas corrigido.",
+            "download_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.10/ARVAIQFootball.exe",
+            "sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.10/ARVAIQFootball.sha256",
+            "setup_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.10/ARVAIQ.Football.-.Setup.exe",
+            "setup_sha256_url": "https://github.com/ARVAIQ/arvaiq-football-updates/releases/download/v2.1.10/ARVAIQFootballSetup.sha256"
+          }
+          '@ | Set-Content channels/football.json -Encoding utf8
+
+          @'
+          {
+            "product": "ARVAIQ Football",
+            "current_release": "2.1.10",
+            "tag": "v2.1.10",
+            "required_assets": ["ARVAIQFootball.exe", "ARVAIQFootball.sha256"],
+            "optional_assets": ["ARVAIQ.Football.-.Setup.exe", "ARVAIQFootballSetup.sha256"],
+            "updater_repo": "ARVAIQ/arvaiq-football-updates"
+          }
+          '@ | Set-Content release-spec.json -Encoding utf8
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- channels/football.json release-spec.json
+          if (-not (git diff --cached --quiet)) {
+            git commit -m "Activate ARVAIQ Football 2.1.10 channel"
+            git pull --rebase origin main
+            git push origin main
+          }
